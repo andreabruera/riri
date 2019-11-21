@@ -1,14 +1,2 @@
 bnc_stemmed_for_bert_ppmi_True_squared_ppmi_True_stopwords_True_window_10_vector_1800_non_zero_12_min_count_10
 
-MEN score:	0.061514321348719044
-Number of tested words: 2998
-
-SimLex999 score:	-0.09087313476453075
-Number of tested words: 999
-
-WS353 similarity score:	-0.12165700805284657
-Number of tested words: 196
-
-WS353 relatedness score:	0.006337758733789601
-Number of tested words: 238
-

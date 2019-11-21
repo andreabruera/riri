@@ -76,8 +76,8 @@ prova = Corpus(args.corpus_dir)
 prova_corpus = ReducedVocabulary(args, prova)
 
 redux = prova_corpus.reduced_vocabulary
+w2i = {v : k for k, v in redux.items()}
 vocab_with_counters = prova_corpus.counters_with_index
-
 total_count = prova_corpus.total_count_words
 #index2word = {v : k for k,v in redux.items() if v != 0}
 #print('Now dumping the dictionary...')
@@ -132,13 +132,11 @@ if args.ppmi == True:
 
         for index_two, conditional_probability_not_normalized in dict_one.items():
 
-            #probability_index_one = vocab_with_counters[index_one]/total_count
-            probability_index_one = vocab_with_counters[index_one]
-            #probability_index_two = vocab_with_counters[index_two]/total_count
-            probability_index_two = vocab_with_counters[index_two]
-            #conditional_probability_normalized = conditional_probability_not_normalized/total_count
-            conditional_probability_normalized = conditional_probability_not_normalized
-            log_ppmi = max(0, int(numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two))))
+            probability_index_one = vocab_with_counters[index_one]/total_count
+            probability_index_two = vocab_with_counters[index_two]/total_count
+            conditional_probability_normalized = conditional_probability_not_normalized/total_count
+            #log_ppmi = max(0, int(numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two))))
+            log_ppmi = numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two))
             #log_ppmi = max(0, int(numpy.log2((conditional_probability_not_normalized/total_count)/((vocab_with_counters[index_one]/total_count)*(vocab_with_counters[index_two]/total_count)))))
             #log_ppmi = numpy.log2((conditional_probability/total_count)/((vocab_with_counters[index_one]/total_count)*(vocab_with_counters[index_two]/total_count)))
             collection_ppmis.append(log_ppmi)
@@ -148,9 +146,9 @@ if args.ppmi == True:
             else:
                log_ppmi = log_ppmi + 1
 
-            for i in range(round(log_ppmi)):
+            #for i in range(round(log_ppmi)):
             #for i in range(conditional_probability_not_normalized):
-                final_vectors[index_one] = final_vectors[index_one] + memory_vectors[index_two]
+                #final_vectors[index_one] = final_vectors[index_one] + memory_vectors[index_two]
 
             #ppmis[index_one][index_two] = log_ppmi
                 #print(index2word[index_one])

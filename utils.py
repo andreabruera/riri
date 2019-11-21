@@ -20,6 +20,7 @@ from tqdm import tqdm
 from nltk.corpus import stopwords
 
 '''
+
 def normalise(vector):
     norm_vector = norm(vector)
     if norm_vector == 0:
@@ -62,11 +63,13 @@ def top_similarities(query, vocabulary, word_vectors, number_similarities):
     print(similarities_dictionary)
 
 '''
+
 class ReducedVocabulary:
     def __init__(self, args, corpus):
 
         self.minimum_count = args.min_count
         self.corpus = corpus
+
         if args.stopwords == True:
             self.stopwords = set(stopwords.words('english'))
         else:
@@ -74,34 +77,33 @@ class ReducedVocabulary:
         
         self.reduced_vocabulary, self.counters_with_index, self.total_count_words = self.trim(args)
 
-    def count(self):
+    def trim(self, args):
+
         logging.info('Counting the words in the corpus, so as to trim the vocabulary size')
         self.word_counters = defaultdict(int)
+        self.total_count_words = 0
         for line in tqdm(self.corpus):
             for word in line:
+                self.total_count_words += 1
                 self.word_counters[word] += 1
 
-    def trim(self, args):
-        self.count()
         logging.info('Trimming the vocabulary')
-        counters_with_index = defaultdict(int)
+        counters_from_index = defaultdict(int)
         reduced_vocabulary = defaultdict(int)
-        total_count_words = 0
         for word, frequency in tqdm((self.word_counters).items()):
-            total_count_words += 1
             if frequency >= self.minimum_count and word not in self.stopwords:
             #if frequency > self.minimum_count:
                 #word_cleaned = re.sub('_test', '', word)
                 reduced_vocabulary[word] = len(reduced_vocabulary.keys()) + 1
-                counters_with_index[reduced_vocabulary[word]] = self.word_counters[word]
+                counters_from_index[reduced_vocabulary[word]] = self.word_counters[word]
             elif frequency < self.minimum_count and '_test' in word:
                 #word_cleaned = re.sub('_test', '', word)
                 reduced_vocabulary[word] = len(reduced_vocabulary.keys()) + 1
-                counters_with_index[reduced_vocabulary[word]] = self.word_counters[word]
+                counters_from_index[reduced_vocabulary[word]] = self.word_counters[word]
             else:
                 reduced_vocabulary[word] = 0
 
-        return reduced_vocabulary, counters_with_index, total_count_words
+        return reduced_vocabulary, counters_from_index, self.total_count_words
 
 class Corpus(object):
     def __init__(self, filedir):
