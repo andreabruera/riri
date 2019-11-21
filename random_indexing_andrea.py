@@ -1,4 +1,3 @@
-import nonce2vec
 import logging
 import collections
 import tqdm
@@ -149,7 +148,7 @@ if args.ppmi == True:
             else:
                log_ppmi = log_ppmi + 1
 
-            for i in range(round(log_ppmi):
+            for i in range(round(log_ppmi)):
             #for i in range(conditional_probability_not_normalized):
                 final_vectors[index_one] = final_vectors[index_one] + memory_vectors[index_two]
 

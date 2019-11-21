@@ -46,7 +46,7 @@ def cosine_similarity(vector_1, vector_2):
     else:
         cosine_similarity = dot(vector_1, vector_2) / denominator
     return cosine_similarity
-'''
+
 
 def top_similarities(query, vocabulary, word_vectors, number_similarities):
     
@@ -61,6 +61,7 @@ def top_similarities(query, vocabulary, word_vectors, number_similarities):
     similarities_dictionary = [sim for sim in sorted(similarities_dictionary.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)][: number_similarities]
     print(similarities_dictionary)
 
+'''
 class ReducedVocabulary:
     def __init__(self, args, corpus):
 
@@ -111,7 +112,7 @@ class Corpus(object):
     def __iter__(self):
 
         for individual_file in self.files: 
-            training_lines = open(individual_file).readlines()
+            training_lines = open(individual_file, errors = 'ignore').readlines()
             for line in tqdm(training_lines):
                 line = line.strip().lower().split()
                 yield line
