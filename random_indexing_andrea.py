@@ -79,6 +79,19 @@ redux = prova_corpus.reduced_vocabulary
 w2i = {v : k for k, v in redux.items()}
 vocab_with_counters = prova_corpus.counters_with_index
 total_count = prova_corpus.total_count_words
+
+print('Now plotting the frequency clusters for visualization...')
+counters = [n for k, n in vocab_with_counters.items()]           
+#values = defaultdict(int)
+
+#for k, v in vocab_with_counters.items():
+    #values[int(round(v))] += 1
+
+fig, ax = plt.subplots()
+ax.hist(counters)
+#ax.scatter([1,2],[1,2])
+fig.savefig('RI_plots/frequencies_{}.png'.format(current_parameters))
+import pdb; pdb.set_trace()
 #index2word = {v : k for k,v in redux.items() if v != 0}
 #print('Now dumping the dictionary...')
 #with open('FIXED_dumped_bnc_NO_LEMMA_TEST_WORDS_redux_100_min_stopwords_removed.pickle', 'wb') as r:
@@ -171,17 +184,6 @@ if args.ppmi == True:
     #ax.scatter([1,2],[1,2])
     fig.savefig('RI_plots/{}.png'.format(current_parameters))
 
-    print('Now plotting the frequency clusters for visualization...')
-    counters = [n for k, n in vocab_with_counters.items()]           
-    #values = defaultdict(int)
-
-    #for k, v in vocab_with_counters.items():
-        #values[int(round(v))] += 1
-
-    fig, ax = plt.subplots()
-    ax.hist(counters, bins = 30)
-    #ax.scatter([1,2],[1,2])
-    fig.savefig('RI_plots/frequencies_{}.png'.format(current_parameters))
 
 #print('Now dumping the co-oc PMIed dictionary...')
 #with open('dumped_bnc_cooc_10_min_window_10_stopwords_removed_PPMIed.pickle', 'wb') as d:
