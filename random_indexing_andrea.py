@@ -88,7 +88,7 @@ counters = [n for k, n in vocab_with_counters.items()]
     #values[int(round(v))] += 1
 
 fig, ax = plt.subplots()
-ax.hist(counters)
+ax.hist(counters, 100)
 #ax.scatter([1,2],[1,2])
 fig.savefig('RI_plots/frequencies_{}.png'.format(current_parameters))
 import pdb; pdb.set_trace()
