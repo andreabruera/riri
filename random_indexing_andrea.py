@@ -125,7 +125,7 @@ def ppmi(matrix):
 
 if args.ppmi == True:
 
-    collection_ppmis = []
+    collection_pmis = []
     print('Now PPMIing it all...')
 
     for index_one, dict_one in tqdm(co_oc.items()):
@@ -136,19 +136,20 @@ if args.ppmi == True:
             probability_index_two = vocab_with_counters[index_two]/total_count
             conditional_probability_normalized = conditional_probability_not_normalized/total_count
             #log_ppmi = max(0, int(numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two))))
-            log_ppmi = numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two))
+            log_pmi = int(numpy.log2(conditional_probability_normalized/(probability_index_one*probability_index_two)))
             #log_ppmi = max(0, int(numpy.log2((conditional_probability_not_normalized/total_count)/((vocab_with_counters[index_one]/total_count)*(vocab_with_counters[index_two]/total_count)))))
             #log_ppmi = numpy.log2((conditional_probability/total_count)/((vocab_with_counters[index_one]/total_count)*(vocab_with_counters[index_two]/total_count)))
-            collection_ppmis.append(log_ppmi)
+            collection_pmis.append(log_pmi)
+            log_ppmi = max(0, log_pmi)
 
             if args.squared_ppmi == True:
-                log_ppmi = (log_ppmi + 1)**2
+                log_pmi = (log_ppmi + 1)**2
             else:
-               log_ppmi = log_ppmi + 1
+               log_pmi = log_ppmi + 1
 
-            #for i in range(round(log_ppmi)):
+            for i in range(log_ppmi):
             #for i in range(conditional_probability_not_normalized):
-                #final_vectors[index_one] = final_vectors[index_one] + memory_vectors[index_two]
+                final_vectors[index_one] = final_vectors[index_one] + memory_vectors[index_two]
 
             #ppmis[index_one][index_two] = log_ppmi
                 #print(index2word[index_one])
@@ -159,10 +160,10 @@ if args.ppmi == True:
     #with open('PPMI_counter_bnc_win_10_min_10_stopwords_removed.pickle', 'wb') as o:
         #dill.dump(ppmis, o)
     print('Now plotting the PPMI clusters for visualization...')
-    clusters = range(max([int(round(n)) for n in collection_ppmis]))           
+    #clusters = range(max([int(round(n)) for n in collection_pmis]))           
     values = defaultdict(int)
 
-    for v in collection_ppmis:
+    for v in collection_pmis:
         values[int(round(v))] += 1
 
     fig, ax = plt.subplots()
@@ -170,6 +171,17 @@ if args.ppmi == True:
     #ax.scatter([1,2],[1,2])
     fig.savefig('RI_plots/{}.png'.format(current_parameters))
 
+    print('Now plotting the frequency clusters for visualization...')
+    counters = [n for k, n in vocab_with_counters.items()]           
+    #values = defaultdict(int)
+
+    #for k, v in vocab_with_counters.items():
+        #values[int(round(v))] += 1
+
+    fig, ax = plt.subplots()
+    ax.hist(counters, bins = 30)
+    #ax.scatter([1,2],[1,2])
+    fig.savefig('RI_plots/frequencies_{}.png'.format(current_parameters))
 
 #print('Now dumping the co-oc PMIed dictionary...')
 #with open('dumped_bnc_cooc_10_min_window_10_stopwords_removed_PPMIed.pickle', 'wb') as d:
