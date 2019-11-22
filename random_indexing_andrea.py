@@ -82,6 +82,8 @@ total_count = prova_corpus.total_count_words
 
 print('Now plotting the frequency clusters for visualization...')
 counters = [n for k, n in vocab_with_counters.items()]           
+with open('counters.pickle', 'wb') as o:
+    pickle.dump(counters, o)
 #values = defaultdict(int)
 
 #for k, v in vocab_with_counters.items():
